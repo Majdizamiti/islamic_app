@@ -14,9 +14,5 @@ public class QiblaActivity extends AppCompatActivity {
         binding = QiblaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Back button functionality
-        binding.ivBack.setOnClickListener(v -> finish());
-
-        // Note: Real compass functionality would require SensorManager
     }
 }
