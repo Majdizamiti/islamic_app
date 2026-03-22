@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_light">#F8F4E9</color>
+    <color name="dark_green">#1B4D3E</color>
+    <color name="gold">#FFD700</color>
+    <color name="gold_light">#F5E6BE</color>
+    <color name="dark_text">#2C3E50</color>
+    <color name="gray_light">#F0F0F0</color>
+    <color name="text_hint">#888888</color>
+
+    <color name="quran_card_green">#E2F0E9</color>
+    <color name="quran_card_yellow">#F9F1E1</color>
+    <color name="meccan_green">#DFF0E8</color>
+    <color name="medinan_yellow">#FCEFD5</color>
+    <color name="meccan_text">#4CAF50</color>
+    <color name="medinan_text">#FF9800</color>
+
+    <color name="success_green_bg">#D4E9E2</color>
+    <color name="hint_yellow_bg">#F9F5E6</color>
+</resources>

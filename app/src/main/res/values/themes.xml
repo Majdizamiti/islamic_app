@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Islamic_app" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Main colors -->
+        <item name="colorPrimary">@color/dark_green</item>
+        <item name="colorSecondary">@color/gold</item>
+        <item name="android:statusBarColor">@color/dark_green</item>
+    </style>
+
+    <style name="Theme.Islamic_app" parent="Base.Theme.Islamic_app" />
+
+    <!-- Overlay styles for Toolbar -->
+    <style name="Theme.Islamic_app.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar" />
+    <style name="Theme.Islamic_app.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
+</resources>

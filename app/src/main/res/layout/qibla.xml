@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_green"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/white"
+            android:rotation="180"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="اتجاه القبلة"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="القاهرة، مصر"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:alpha="0.8" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Compass View -->
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/circle_backgroud_light"
+                android:elevation="8dp">
+
+                <ImageView
+                    android:id="@+id/ivCompass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp"
+                    android:src="@drawable/circle_backgroud_light"
+                    android:alpha="0.5"/>
+
+                <ImageView
+                    android:id="@+id/ivQiblaIndicator"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/circle_background_gold"
+                    android:backgroundTint="@color/dark_green"
+                    android:padding="15dp"
+                    app:srcCompat="@drawable/btn_star_big_on" />
+
+                <!-- Cardinal Directions -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="شمال" android:layout_centerHorizontal="true" android:layout_marginTop="10dp" android:textColor="@color/text_hint" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="جنوب" android:layout_centerHorizontal="true" android:layout_alignParentBottom="true" android:layout_marginBottom="10dp" android:textColor="@color/text_hint" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="شرق" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:layout_marginEnd="10dp" android:textColor="@color/text_hint" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="غرب" android:layout_alignParentStart="true" android:layout_centerVertical="true" android:layout_marginStart="10dp" android:textColor="@color/text_hint" android:textSize="12sp"/>
+            </RelativeLayout>
+
+            <!-- Distance Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tvDegree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="45°"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/dark_green"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="شمال شرق"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_hint"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/ivNavigate"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="end"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="المسافة إلى مكة"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_hint"/>
+                        <TextView
+                            android:id="@+id/tvDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3,435 كم"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ivNavigate"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/circle_background_gold"
+                        android:backgroundTint="@color/dark_green"
+                        android:padding="12dp"
+                        android:src="@android:drawable/ic_menu_directions"
+                        app:tint="@color/white" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Status Success -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ayah_background_pattern"
+                android:backgroundTint="@color/success_green_bg"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="تم تحديد اتجاه القبلة بنجاح ✓"
+                android:textColor="@color/dark_green"
+                android:textStyle="bold"/>
+
+            <!-- Hint -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ayah_background_pattern"
+                android:backgroundTint="@color/hint_yellow_bg"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="اجعل هاتفك مستوياً للحصول على أفضل دقة"
+                android:textColor="@color/text_hint"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
