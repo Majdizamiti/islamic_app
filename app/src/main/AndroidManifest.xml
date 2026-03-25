@@ -31,6 +31,10 @@
         <activity
             android:name=".QiblaActivity"
             android:exported="false" />
+        <activity
+            android:name=".TasbihActivity"
+            android:exported="false"
+            tools:ignore="MissingClass" />
     </application>
 
 </manifest>

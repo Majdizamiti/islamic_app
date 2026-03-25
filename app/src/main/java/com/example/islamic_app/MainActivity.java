@@ -27,5 +27,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, QiblaActivity.class);
             startActivity(intent);
         });
+
+        // Redirect to TasbihActivity
+        binding.ivTasbih.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TasbihActivity.class);
+            startActivity(intent);
+        });
     }
 }

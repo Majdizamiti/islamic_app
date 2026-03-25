@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Islamic_app</string>
     <string name="action_settings">Settings</string>
@@ -6,6 +7,27 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="tasbih_title">المسبحة الإلكترونية</string>
+    <string name="tasbih_subtitle">سبح واذكر الله في كل وقت</string>
+    <string name="dhikr_subhan_allah">سبحان الله</string>
+    <string name="dhikr_alhamdulillah">الحمد لله</string>
+    <string name="dhikr_allahu_akbar">الله أكبر</string>
+    <string name="dhikr_la_ilaha">لا إله إلا الله</string>
+    <string name="target_prefix">من </string>
+    <string name="tasbih_button">تسبيح</string>
+    <string name="tasbih_button_sub">اضغط للعد</string>
+    <string name="rounds">الجولات</string>
+    <string name="total_today">الإجمالي اليوم</string>
+    <string name="reset">إعادة تعيين ↺</string>
+    <string name="virtue_title">فضل التسبيح</string>
+    <string name="tasbih_hadith">\" مَنْ قَالَ سُبْحَانَ اللَّهِ وَبِحَمْدِهِ فِي يَوْمٍ مِائَةَ مَرَّةٍ حُطَّتْ خَطَايَاهُ وَإِنْ كَانَتْ مِثْلَ زَبَدِ الْبَحْرِ \"</string>
+    <string name="hadith_source">رواه البخاري ومسلم</string>
+    <string name="sound_icon_desc">صوت</string>
+    <string name="star_icon_desc">نجمة</string>
+    <string name="default_count">20</string>
+    <string name="default_target">33</string>
+    <string name="zero">0</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
