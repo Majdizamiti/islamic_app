@@ -6,8 +6,12 @@ import android.os.Handler;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.islamic_app.databinding.ActivitySplachBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplachActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,11 +19,21 @@ public class SplachActivity extends AppCompatActivity {
         ActivitySplachBinding binding = ActivitySplachBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Show Splash for 4 seconds then move to MainActivity
+        mAuth = FirebaseAuth.getInstance();
+
+        // Show Splash for 3 seconds then check auth state
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = new Intent(SplachActivity.this, MainActivity.class);
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            Intent intent;
+            if (currentUser != null) {
+                // User is signed in, go to MainActivity
+                intent = new Intent(SplachActivity.this, MainActivity.class);
+            } else {
+                // No user is signed in, go to LoginActivity
+                intent = new Intent(SplachActivity.this, LoginActivity.class);
+            }
             startActivity(intent);
-            finish(); // Close SplashActivity so user can't go back to it
-        }, 4000);
+            finish();
+        }, 3000);
     }
 }
