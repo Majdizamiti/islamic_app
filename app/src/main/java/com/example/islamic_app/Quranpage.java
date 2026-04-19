@@ -1,5 +1,6 @@
 package com.example.islamic_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,14 @@ public class Quranpage extends AppCompatActivity {
     }
 
     private void onSurahClick(Surah surah) {
-        Toast.makeText(this, "Opening " + surah.getNameArabic(), Toast.LENGTH_SHORT).show();
+        try {
+            int selectedSurahNumber = Integer.parseInt(surah.getNumber());
+            Intent intent = new Intent(Quranpage.this, SurahDetailActivity.class);
+            intent.putExtra(SurahDetailActivity.EXTRA_SURAH_NUMBER, selectedSurahNumber);
+            startActivity(intent);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, R.string.surah_error_invalid_number, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private List<Surah> getFullSurahList() {

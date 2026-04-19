@@ -28,6 +28,18 @@
     <string name="default_count">20</string>
     <string name="default_target">33</string>
     <string name="zero">0</string>
+    <string name="surah_loading">جاري تحميل السورة...</string>
+    <string name="surah_meta_placeholder">يرجى الانتظار</string>
+    <string name="surah_error_generic">تعذر تحميل السورة. حاول مرة أخرى.</string>
+    <string name="surah_error_network">لا يوجد اتصال إنترنت مستقر. تحقق من الشبكة ثم أعد المحاولة.</string>
+    <string name="surah_error_parse">تعذر قراءة بيانات السورة.</string>
+    <string name="surah_error_invalid_number">رقم السورة غير صالح.</string>
+    <string name="surah_title_default">سورة</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="ayah_word">آية</string>
+    <string name="revelation_meccan_ar">مكية</string>
+    <string name="revelation_medinan_ar">مدنية</string>
+    <string name="revelation_unknown_ar">غير محدد</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
