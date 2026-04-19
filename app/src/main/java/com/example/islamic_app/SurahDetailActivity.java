@@ -36,6 +36,7 @@ public class SurahDetailActivity extends AppCompatActivity {
         binding = ActivitySurahDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Read the selected surah number passed from Quranpage.
         surahNumber = getIntent().getIntExtra(EXTRA_SURAH_NUMBER, -1);
 
         binding.ivBack.setOnClickListener(v -> finish());
@@ -50,8 +51,10 @@ public class SurahDetailActivity extends AppCompatActivity {
     }
 
     private void fetchSurah() {
+        // Every new request starts by switching the screen to loading state.
         showLoading();
 
+        // Network call is done off the main thread to keep UI responsive.
         new Thread(() -> {
             HttpURLConnection connection = null;
             try {
@@ -62,6 +65,7 @@ public class SurahDetailActivity extends AppCompatActivity {
                 connection.setReadTimeout(10000);
 
                 int responseCode = connection.getResponseCode();
+                // For non-2xx responses, read from error stream to extract API message.
                 InputStream stream = responseCode >= 200 && responseCode < 300
                         ? connection.getInputStream()
                         : connection.getErrorStream();
@@ -80,6 +84,7 @@ public class SurahDetailActivity extends AppCompatActivity {
                 }
 
                 if (responseCode >= 200 && responseCode < 300 && payload.ayahs != null && !payload.ayahs.isEmpty()) {
+                    // UI updates must run on the main thread.
                     runOnUiThread(() -> showContent(payload));
                 } else {
                     String message = payload.errorMessage != null ? payload.errorMessage : getString(R.string.surah_error_generic);
@@ -96,6 +101,7 @@ public class SurahDetailActivity extends AppCompatActivity {
     }
 
     private void showLoading() {
+        // State 1/3: Loading
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.layoutError.setVisibility(View.GONE);
         binding.scrollContent.setVisibility(View.GONE);
@@ -104,6 +110,7 @@ public class SurahDetailActivity extends AppCompatActivity {
     }
 
     private void showError(String message) {
+        // State 2/3: Error
         binding.progressBar.setVisibility(View.GONE);
         binding.scrollContent.setVisibility(View.GONE);
         binding.layoutError.setVisibility(View.VISIBLE);
@@ -111,6 +118,7 @@ public class SurahDetailActivity extends AppCompatActivity {
     }
 
     private void showContent(SurahPayload payload) {
+        // State 3/3: Content
         binding.progressBar.setVisibility(View.GONE);
         binding.layoutError.setVisibility(View.GONE);
         binding.scrollContent.setVisibility(View.VISIBLE);
@@ -122,6 +130,7 @@ public class SurahDetailActivity extends AppCompatActivity {
         binding.llAyahContainer.removeAllViews();
         LayoutInflater inflater = getLayoutInflater();
         for (AyahItem ayah : payload.ayahs) {
+            // Inflate one RTL ayah card per verse and append to the container.
             ItemAyahBinding ayahBinding = ItemAyahBinding.inflate(inflater, binding.llAyahContainer, false);
             ayahBinding.tvAyahText.setText(ayah.text);
             ayahBinding.tvAyahNumber.setText(String.valueOf(ayah.numberInSurah));
@@ -141,6 +150,7 @@ public class SurahDetailActivity extends AppCompatActivity {
 
             Object dataObject = root.get("data");
             if (dataObject instanceof String) {
+                // API can return an error text in data for invalid requests.
                 payload.errorMessage = root.optString("data", getString(R.string.surah_error_generic));
                 return payload;
             }
@@ -158,6 +168,7 @@ public class SurahDetailActivity extends AppCompatActivity {
                     JSONObject ayahJson = ayahsJson.getJSONObject(i);
                     AyahItem ayah = new AyahItem();
                     ayah.numberInSurah = ayahJson.optInt("numberInSurah", i + 1);
+                    // Remove BOM marker if present in first ayah text.
                     ayah.text = ayahJson.optString("text", "").replace("\uFEFF", "").trim();
                     payload.ayahs.add(ayah);
                 }

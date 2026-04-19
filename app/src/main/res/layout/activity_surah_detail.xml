@@ -6,6 +6,7 @@
     android:background="@color/background_light"
     android:orientation="vertical">
 
+    <!-- Header: back action + surah title + metadata -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="170dp"
@@ -59,12 +60,14 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <!-- Loading state -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
+        <!-- Error state with retry -->
         <LinearLayout
             android:id="@+id/layoutError"
             android:layout_width="match_parent"
@@ -95,6 +98,7 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
+        <!-- Content state: ayah list container -->
         <ScrollView
             android:id="@+id/scrollContent"
             android:layout_width="match_parent"

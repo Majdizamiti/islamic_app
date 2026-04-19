@@ -59,11 +59,13 @@ public class Quranpage extends AppCompatActivity {
 
     private void onSurahClick(Surah surah) {
         try {
+            // Parse the selected surah number and pass it to detail screen.
             int selectedSurahNumber = Integer.parseInt(surah.getNumber());
             Intent intent = new Intent(Quranpage.this, SurahDetailActivity.class);
             intent.putExtra(SurahDetailActivity.EXTRA_SURAH_NUMBER, selectedSurahNumber);
             startActivity(intent);
         } catch (NumberFormatException e) {
+            // Guard against malformed local data.
             Toast.makeText(this, R.string.surah_error_invalid_number, Toast.LENGTH_SHORT).show();
         }
     }
