@@ -20,3 +20,5 @@ local.properties
 cmake-build-*/
 build/
 
+#OpenCode
+.opencode
