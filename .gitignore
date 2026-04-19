@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+#IntelliJ/Android Studio files
+.idea/
+*.iml
+cmake-build-*/
+build/
+
