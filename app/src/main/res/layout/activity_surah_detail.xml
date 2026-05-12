@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light">
+
+    <!-- Header Section -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/dark_green"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_revert"
+            android:rotation="180"
+            app:tint="@color/white" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSurahName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="سورة الفاتحة"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSurahMeta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="مكية - 7 آية"
+                android:textColor="@color/white"
+                android:alpha="0.8"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivBookmark"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/btn_star_big_off"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/ivAudio"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@android:drawable/ic_lock_silent_mode_off"
+                app:tint="@color/white" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Control Bar -->
+    <LinearLayout
+        android:id="@+id/controlBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_rounded_green"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="6dp"
+            android:text="عربي"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="العربية"
+            android:textColor="@color/dark_text"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="4dp"
+            android:src="@android:drawable/arrow_down_float"
+            app:tint="@color/dark_text" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/ivZoomOut"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_search"
+            app:tint="@color/dark_text" />
+
+        <TextView
+            android:id="@+id/tvFontSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:text="20px"
+            android:textColor="@color/dark_text"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/ivZoomIn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_add"
+            app:tint="@color/dark_text" />
+
+    </LinearLayout>
+
+    <!-- Main Content -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNav"
+        android:layout_below="@id/controlBar">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layoutError"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/tvErrorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/surah_error_generic" />
+            <Button
+                android:id="@+id/btnRetry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout
+                android:id="@+id/llAyahContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="16dp" />
+        </ScrollView>
+    </FrameLayout>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/btnPrevSurah"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/edittext_background"
+            android:backgroundTint="#F0F0F0"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_menu_revert"
+                android:rotation="180"
+                app:tint="@color/text_hint" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/prev_surah"
+                android:textColor="@color/text_hint"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnNextSurah"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:gravity="center"
+            android:background="@drawable/bg_btn_rounded_green"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next_surah"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

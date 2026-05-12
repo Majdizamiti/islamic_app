@@ -3,7 +3,6 @@ package com.example.islamic_app;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.islamic_app.databinding.ItemSurahBinding;
 import com.example.islamic_app.databinding.PageQuranBinding;
@@ -57,7 +56,9 @@ public class Quranpage extends AppCompatActivity {
     }
 
     private void onSurahClick(Surah surah) {
-        Toast.makeText(this, "Opening " + surah.getNameArabic(), Toast.LENGTH_SHORT).show();
+        android.content.Intent intent = new android.content.Intent(this, SurahDetailActivity.class);
+        intent.putExtra(SurahDetailActivity.EXTRA_SURAH_NUMBER, Integer.parseInt(surah.getNumber()));
+        startActivity(intent);
     }
 
     private List<Surah> getFullSurahList() {
