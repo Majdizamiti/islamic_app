@@ -23,28 +23,6 @@
             app:tint="@color/white"
             android:rotation="180"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="القرآن الكريم"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="114 سورة"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:alpha="0.8" />
-        </LinearLayout>
-
         <EditText
             android:id="@+id/etSearchSurah"
             android:layout_width="match_parent"
@@ -63,62 +41,11 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <!-- Scrollable Content Section -->
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSurah"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:padding="8dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Tabs and Summary Cards Row (OMITTED for brevity, but they are there) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:weightSum="3">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/ayah_background_pattern"
-                    android:backgroundTint="@color/gray_light"
-                    android:gravity="center"
-                    android:text="28 مدنية"
-                    android:textColor="@color/dark_text" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/ayah_background_pattern"
-                    android:backgroundTint="@color/gray_light"
-                    android:gravity="center"
-                    android:text="86 مكية"
-                    android:textColor="@color/dark_text" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/ayah_background_pattern"
-                    android:backgroundTint="@color/dark_green"
-                    android:gravity="center"
-                    android:text="الكل"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-
-            <!-- Container for Surah Items (Now a LinearLayout inside ScrollView) -->
-            <LinearLayout
-                android:id="@+id/llSurahContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-        </LinearLayout>
-    </ScrollView>
 
 </LinearLayout>

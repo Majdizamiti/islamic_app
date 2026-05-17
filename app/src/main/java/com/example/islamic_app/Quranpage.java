@@ -8,6 +8,9 @@ import com.example.islamic_app.databinding.ItemSurahBinding;
 import com.example.islamic_app.databinding.PageQuranBinding;
 import java.util.ArrayList;
 import java.util.List;
+import android.content.Intent;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 
 public class Quranpage extends AppCompatActivity {
 
@@ -19,47 +22,22 @@ public class Quranpage extends AppCompatActivity {
         binding = PageQuranBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // --- POPULATE SCROLLVIEW MANUALLY ---
+
         List<Surah> surahList = getFullSurahList();
-        LayoutInflater inflater = getLayoutInflater();
 
-        for (Surah surah : surahList) {
-            // Inflate each surah item layout
-            ItemSurahBinding itemBinding = ItemSurahBinding.inflate(inflater, binding.llSurahContainer, false);
-            
-            // Bind data
-            itemBinding.tvSurahNumber.setText(surah.getNumber());
-            itemBinding.tvSurahArabic.setText(surah.getNameArabic());
-            itemBinding.tvSurahEnglish.setText(surah.getNameEnglish());
-            itemBinding.tvSurahType.setText(surah.getType());
+        SurahAdapter adapter = new SurahAdapter(surahList, surah -> {
+            Intent intent = new Intent(Quranpage.this, SurahDetailActivity.class);
+            intent.putExtra(SurahDetailActivity.EXTRA_SURAH_NUMBER,
+                    Integer.parseInt(surah.getNumber()));
+            startActivity(intent);
+        });
 
-            // Apply dynamic styling based on Surah Type
-            if ("مدنية".equals(surah.getType())) {
-                itemBinding.ivSurahStar.setColorFilter(getColor(R.color.medinan_text));
-                itemBinding.tvSurahType.setBackgroundTintList(getColorStateList(R.color.medinan_yellow));
-                itemBinding.tvSurahType.setTextColor(getColor(R.color.medinan_text));
-            } else {
-                itemBinding.ivSurahStar.setColorFilter(getColor(R.color.meccan_text));
-                itemBinding.tvSurahType.setBackgroundTintList(getColorStateList(R.color.meccan_green));
-                itemBinding.tvSurahType.setTextColor(getColor(R.color.meccan_text));
-            }
+        binding.recyclerSurah.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerSurah.setAdapter(adapter);
 
-            // Set click listener
-            itemBinding.getRoot().setOnClickListener(v -> onSurahClick(surah));
-            
-            // Add the item to the container
-            binding.llSurahContainer.addView(itemBinding.getRoot());
-        }
-
-        // Back button
         binding.ivBack.setOnClickListener(v -> finish());
     }
 
-    private void onSurahClick(Surah surah) {
-        android.content.Intent intent = new android.content.Intent(this, SurahDetailActivity.class);
-        intent.putExtra(SurahDetailActivity.EXTRA_SURAH_NUMBER, Integer.parseInt(surah.getNumber()));
-        startActivity(intent);
-    }
 
     private List<Surah> getFullSurahList() {
         List<Surah> list = new ArrayList<>();
