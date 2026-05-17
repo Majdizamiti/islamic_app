@@ -26,13 +26,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        fetchPrayerTimes();
+        loadData();
+
+
 
         // Redirect to Quranpage
         binding.Quranicon.setOnClickListener(v -> {
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void loadData() {
+        fetchPrayerTimes();
+    }
     private void updatePrayerUI(String fajr, String dhuhr, String asr,
                                 String maghrib, String isha) {
 

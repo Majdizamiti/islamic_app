@@ -23,12 +23,6 @@
             app:tint="@color/white"
             android:rotation="180"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSurah"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"/>
-
         <EditText
             android:id="@+id/etSearchSurah"
             android:layout_width="match_parent"
@@ -47,6 +41,11 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSurah"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp" />
 
 
 </LinearLayout>
