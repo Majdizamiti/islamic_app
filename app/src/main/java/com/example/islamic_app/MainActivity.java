@@ -24,13 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
+        fetchPrayerTimes();
 
         // Redirect to Quranpage
         binding.Quranicon.setOnClickListener(v -> {
@@ -50,6 +52,61 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    private void updatePrayerUI(String fajr, String dhuhr, String asr,
+                                String maghrib, String isha) {
+
+        binding.tvFajr.setText(fajr);
+        binding.tvDhuhr.setText(dhuhr);
+        binding.tvAsr.setText(asr);
+        binding.tvMaghrib.setText(maghrib);
+        binding.tvIsha.setText(isha);
+    }
+
+    private void fetchPrayerTimes() {
+        new Thread(() -> {
+            try {
+                String city = "Tunis";
+                String country = "Tunisia";
+
+                String urlString = "https://api.aladhan.com/v1/timingsByCity?city="
+                        + city + "&country=" + country + "&method=2";
+
+                java.net.URL url = new java.net.URL(urlString);
+                java.net.HttpURLConnection connection =
+                        (java.net.HttpURLConnection) url.openConnection();
+
+                connection.setRequestMethod("GET");
+
+                java.io.InputStream stream = connection.getInputStream();
+                java.io.BufferedReader reader =
+                        new java.io.BufferedReader(new java.io.InputStreamReader(stream));
+
+                StringBuilder result = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+                org.json.JSONObject json = new org.json.JSONObject(result.toString());
+                org.json.JSONObject timings =
+                        json.getJSONObject("data").getJSONObject("timings");
+
+                String fajr = timings.getString("Fajr");
+                String dhuhr = timings.getString("Dhuhr");
+                String asr = timings.getString("Asr");
+                String maghrib = timings.getString("Maghrib");
+                String isha = timings.getString("Isha");
+
+                runOnUiThread(() -> updatePrayerUI(fajr, dhuhr, asr, maghrib, isha));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
 
 
 }
