@@ -39,7 +39,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="المصحف الشريف"
+                        android:text="إحسان"
                         android:textColor="@color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
@@ -47,10 +47,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="السلام عليكم ورحمة الله"
+                        android:alpha="0.8"
+                        android:text="السّلام عليكم ورحمة اللّه وبركاته"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:alpha="0.8" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -136,7 +136,6 @@
                         android:progress="60"
                         android:progressTint="@color/dark_green" />
 
-                    <!-- Prayer Icons Bottom row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
