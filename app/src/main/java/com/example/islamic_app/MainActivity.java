@@ -14,18 +14,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.util.Log;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
+    private TextView tvRandomAyahText;
+    private TextView tvRandomAyahInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -35,15 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         loadData();
 
-
-
         // Redirect to Quranpage
         binding.Quranicon.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, Quranpage.class);
             startActivity(intent);
         });
-
-
 
         // Redirect to TasbihActivity
         binding.ivTasbih.setOnClickListener(v -> {
@@ -54,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
+
+        tvRandomAyahText = findViewById(R.id.tvRandomAyahText);
+        tvRandomAyahInfo = findViewById(R.id.tvRandomAyahInfo);
+
+        loadRandomAyahForHome();
     }
 
     private void loadData() {
@@ -111,6 +121,28 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    private void loadRandomAyahForHome() {
+        QuranApiClient.fetchRandomAyah(new QuranApiClient.RandomAyahCallback() {
+            @Override
+            public void onSuccess(QuranApiClient.SurahPayload surah, QuranApiClient.AyahItem ayah) {
+                runOnUiThread(() -> {
+                    tvRandomAyahText.setText(ayah.text);
+
+                    String info = surah.name + " - الآية " + ayah.numberInSurah;
+                    tvRandomAyahInfo.setText(info);
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() -> {
+                    tvRandomAyahText.setText("تعذر تحميل الآية");
+                    tvRandomAyahInfo.setText("");
+                });
+            }
+        });
     }
 
 

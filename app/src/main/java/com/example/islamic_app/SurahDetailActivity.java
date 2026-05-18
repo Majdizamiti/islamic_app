@@ -1,7 +1,6 @@
 package com.example.islamic_app;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -10,40 +9,45 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.islamic_app.databinding.ActivitySurahDetailBinding;
 import com.example.islamic_app.databinding.ItemAyahBinding;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
 public class SurahDetailActivity extends AppCompatActivity {
 
+    // Key used when opening this Activity from another Activity.
+    // Example:
+    // intent.putExtra(SurahDetailActivity.EXTRA_SURAH_NUMBER, 2);
     public static final String EXTRA_SURAH_NUMBER = "extra_surah_number";
 
+    // ViewBinding object for activity_surah_detail.xml
+    // It allows us to access views without findViewById.
     private ActivitySurahDetailBinding binding;
+
+    // The current surah number being displayed.
+    // Example: 1 = Al-Fatiha, 2 = Al-Baqarah, etc.
     private int surahNumber;
+
+    // Current font size for ayah text.
+    // User can increase/decrease it using zoom buttons.
     private float currentFontSize = 22f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Inflate the XML layout using ViewBinding
         binding = ActivitySurahDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Read the selected surah number passed from Quranpage.
+        // Get the selected surah number sent from the previous screen.
+        // If no surah number is sent, default value will be -1.
         surahNumber = getIntent().getIntExtra(EXTRA_SURAH_NUMBER, -1);
 
+        // Back button: closes this screen and returns to previous screen.
         binding.ivBack.setOnClickListener(v -> finish());
+
+        // Retry button: used when API loading fails.
         binding.btnRetry.setOnClickListener(v -> fetchSurah());
 
+        // Next surah button.
+        // It only works if we are not already at the last surah, which is 114.
         binding.btnNextSurah.setOnClickListener(v -> {
             if (surahNumber < 114) {
                 surahNumber++;
@@ -51,6 +55,8 @@ public class SurahDetailActivity extends AppCompatActivity {
             }
         });
 
+        // Previous surah button.
+        // It only works if we are not already at the first surah.
         binding.btnPrevSurah.setOnClickListener(v -> {
             if (surahNumber > 1) {
                 surahNumber--;
@@ -58,6 +64,8 @@ public class SurahDetailActivity extends AppCompatActivity {
             }
         });
 
+        // Increase ayah font size.
+        // Max size is 40 to avoid making the text too huge.
         binding.ivZoomIn.setOnClickListener(v -> {
             if (currentFontSize < 40) {
                 currentFontSize += 2;
@@ -65,6 +73,8 @@ public class SurahDetailActivity extends AppCompatActivity {
             }
         });
 
+        // Decrease ayah font size.
+        // Min size is 14 to avoid making the text too small.
         binding.ivZoomOut.setOnClickListener(v -> {
             if (currentFontSize > 14) {
                 currentFontSize -= 2;
@@ -72,120 +82,136 @@ public class SurahDetailActivity extends AppCompatActivity {
             }
         });
 
+        // Validate surah number before calling the API.
+        // Quran has only 114 surahs.
         if (surahNumber < 1 || surahNumber > 114) {
             showError(getString(R.string.surah_error_invalid_number));
             return;
         }
 
+        // Load the selected surah from the API.
         fetchSurah();
     }
 
+    /**
+     * Fetches the current surah using QuranApiClient.
+     *
+     * Important:
+     * QuranApiClient handles:
+     * - API request
+     * - HTTP connection
+     * - JSON parsing
+     * - Returning SurahPayload
+     *
+     * This Activity only handles UI display.
+     */
     private void fetchSurah() {
+        // Show loading UI while waiting for the API response.
         showLoading();
 
-        new Thread(() -> {
-            HttpURLConnection connection = null;
-            try {
-                // Using the requested qurani.ai API
-                // We use the surah endpoint with quran-uthmani edition to get all ayahs at once efficiently
-                URL url = new URL("https://api.qurani.ai/gw/qh/v1/surah/" + surahNumber + "/quran-uthmani");
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(10000);
-                connection.setReadTimeout(10000);
-
-                int responseCode = connection.getResponseCode();
-                InputStream stream = responseCode >= 200 && responseCode < 300
-                        ? connection.getInputStream()
-                        : connection.getErrorStream();
-
-                if (stream == null) {
-                    runOnUiThread(() -> showError(getString(R.string.surah_error_generic)));
-                    return;
-                }
-
-                String body = readStream(stream);
-                SurahPayload payload = parseResponse(body);
-
-                if (payload == null) {
-                    runOnUiThread(() -> showError(getString(R.string.surah_error_parse)));
-                    return;
-                }
-
-                if (responseCode >= 200 && responseCode < 300 && payload.ayahs != null) {
-                    runOnUiThread(() -> showContent(payload));
-                } else {
-                    String message = payload.errorMessage != null ? payload.errorMessage : getString(R.string.surah_error_generic);
-                    runOnUiThread(() -> showError(message));
-                }
-            } catch (IOException e) {
-                Log.e("SurahDetail", "Network error", e);
-                runOnUiThread(() -> showError(getString(R.string.surah_error_network)));
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+        QuranApiClient.fetchSurah(surahNumber, new QuranApiClient.SurahCallback() {
+            @Override
+            public void onSuccess(QuranApiClient.SurahPayload payload) {
+                // API callback runs in a background thread.
+                // UI must be updated on the main thread.
+                runOnUiThread(() -> showContent(payload));
             }
-        }).start();
+
+            @Override
+            public void onError(String errorMessage) {
+                // Show the error message on the UI thread.
+                runOnUiThread(() -> showError(errorMessage));
+            }
+        });
     }
 
+    /**
+     * Shows loading state while the surah is being fetched.
+     */
     private void showLoading() {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.layoutError.setVisibility(View.GONE);
         binding.scrollContent.setVisibility(View.GONE);
+
         binding.tvSurahName.setText(R.string.surah_loading);
         binding.tvSurahMeta.setText(R.string.surah_meta_placeholder);
     }
 
+    /**
+     * Shows error state when something goes wrong.
+     * Example:
+     * - Network error
+     * - API error
+     * - Invalid surah number
+     * - JSON parse error
+     */
     private void showError(String message) {
         binding.progressBar.setVisibility(View.GONE);
         binding.scrollContent.setVisibility(View.GONE);
         binding.layoutError.setVisibility(View.VISIBLE);
+
         binding.tvErrorMessage.setText(message);
     }
 
-    private void updateFontSize() {
-        binding.tvFontSize.setText((int)currentFontSize + "px");
-        for (int i = 0; i < binding.llAyahContainer.getChildCount(); i++) {
-            View child = binding.llAyahContainer.getChildAt(i);
-            if (child.getId() == R.id.tvBismillah) {
-                ((android.widget.TextView) child).setTextSize(currentFontSize + 6); // Keep it slightly larger
-            } else {
-                try {
-                    ItemAyahBinding itemBinding = ItemAyahBinding.bind(child);
-                    itemBinding.tvAyahText.setTextSize(currentFontSize);
-                } catch (Exception ignored) {}
-            }
-        }
-    }
-
-    private void showContent(SurahPayload payload) {
+    /**
+     * Displays the surah content after it is successfully fetched.
+     */
+    private void showContent(QuranApiClient.SurahPayload payload) {
         binding.progressBar.setVisibility(View.GONE);
         binding.layoutError.setVisibility(View.GONE);
         binding.scrollContent.setVisibility(View.VISIBLE);
 
+        // Display surah name.
         binding.tvSurahName.setText(payload.name);
-        String meta = payload.revelationTypeArabic + " - " + payload.numberOfAyahs + " " + getString(R.string.ayah_word);
+
+        // Convert "Meccan" / "Medinan" to Arabic.
+        String revelationTypeArabic = toArabicRevelationType(payload.revelationType);
+
+        // Example:
+        // مكية - 7 آيات
+        String meta = revelationTypeArabic
+                + " - "
+                + payload.numberOfAyahs
+                + " "
+                + getString(R.string.ayah_word);
+
         binding.tvSurahMeta.setText(meta);
 
+        // Clear old ayahs before adding the new surah ayahs.
+        // This is important when using next/previous buttons.
         binding.llAyahContainer.removeAllViews();
+
         LayoutInflater inflater = getLayoutInflater();
 
-        // Add Bismillah header for all surahs except Tawbah (9)
+        // Add Bismillah header for all surahs except Surah At-Tawbah.
+        // Surah 9 does not start with Bismillah.
         if (surahNumber != 9) {
-            View bismillahView = inflater.inflate(R.layout.item_bismillah, binding.llAyahContainer, false);
+            View bismillahView = inflater.inflate(
+                    R.layout.item_bismillah,
+                    binding.llAyahContainer,
+                    false
+            );
+
             binding.llAyahContainer.addView(bismillahView);
         }
 
-        for (AyahItem ayah : payload.ayahs) {
+        // Safety check in case API returned no ayahs.
+        if (payload.ayahs == null || payload.ayahs.isEmpty()) {
+            showError(getString(R.string.surah_error_parse));
+            return;
+        }
+
+        // Loop through every ayah and add it to the LinearLayout.
+        for (QuranApiClient.AyahItem ayah : payload.ayahs) {
             String text = ayah.text;
-            
-            // Remove Bismillah from the first ayah of every surah except Surah 9 (Tawbah)
+
+            // The API may include Bismillah inside the first ayah.
+            // Since we already display Bismillah as a separate header,
+            // we remove it from the first ayah to avoid duplication.
             if (ayah.numberInSurah == 1 && surahNumber != 9) {
-                // Calculate lengths of Bismillah variations to remove them precisely
-                String b1 = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"; // Variation with Alif Wasla
-                String b2 = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"; // Standard Alif variation
-                
+                String b1 = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
+                String b2 = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+
                 if (text.startsWith(b1)) {
                     text = text.substring(b1.length()).trim();
                 } else if (text.startsWith(b2)) {
@@ -193,83 +219,76 @@ public class SurahDetailActivity extends AppCompatActivity {
                 }
             }
 
-            // Only add a card if there is remaining text (handles cases like Surah 1 Ayah 1 becoming empty)
+            // Only add the ayah if there is text left.
+            // This avoids showing an empty card if the first ayah was only Bismillah.
             if (!text.isEmpty()) {
-                ItemAyahBinding ayahBinding = ItemAyahBinding.inflate(inflater, binding.llAyahContainer, false);
+                ItemAyahBinding ayahBinding = ItemAyahBinding.inflate(
+                        inflater,
+                        binding.llAyahContainer,
+                        false
+                );
+
+                // Set ayah text.
                 ayahBinding.tvAyahText.setText(text);
+
+                // Apply current font size.
                 ayahBinding.tvAyahText.setTextSize(currentFontSize);
+
+                // Set ayah number.
                 ayahBinding.tvAyahNumber.setText(String.valueOf(ayah.numberInSurah));
+
+                // Add the ayah card to the container.
                 binding.llAyahContainer.addView(ayahBinding.getRoot());
             }
         }
+
+        // Make sure font size is applied to all views,
+        // including Bismillah and ayah cards.
+        updateFontSize();
     }
 
-    private SurahPayload parseResponse(String body) {
-        try {
-            JSONObject root = new JSONObject(body);
-            SurahPayload payload = new SurahPayload();
+    /**
+     * Updates font size for:
+     * - Bismillah text
+     * - All ayah text views
+     */
+    private void updateFontSize() {
+        // Display current font size in the UI.
+        binding.tvFontSize.setText((int) currentFontSize + "px");
 
-            if (!root.has("data")) {
-                payload.errorMessage = getString(R.string.surah_error_generic);
-                return payload;
-            }
+        // Loop through all children inside the ayah container.
+        for (int i = 0; i < binding.llAyahContainer.getChildCount(); i++) {
+            View child = binding.llAyahContainer.getChildAt(i);
 
-            JSONObject data = root.getJSONObject("data");
-            payload.name = data.optString("name", getString(R.string.surah_title_default));
-            String revelationType = data.optString("revelationType", "");
-            payload.revelationTypeArabic = toArabicRevelationType(revelationType);
-            payload.numberOfAyahs = data.optInt("numberOfAyahs", 0);
+            // If this child is the Bismillah TextView,
+            // make it slightly larger than normal ayah text.
+            if (child.getId() == R.id.tvBismillah) {
+                ((android.widget.TextView) child).setTextSize(currentFontSize + 6);
+            } else {
+                try {
+                    // Try binding this child as an ayah item layout.
+                    ItemAyahBinding itemBinding = ItemAyahBinding.bind(child);
 
-            JSONArray ayahsJson = data.optJSONArray("ayahs");
-            payload.ayahs = new ArrayList<>();
-            if (ayahsJson != null) {
-                for (int i = 0; i < ayahsJson.length(); i++) {
-                    JSONObject ayahJson = ayahsJson.getJSONObject(i);
-                    AyahItem ayah = new AyahItem();
-                    ayah.numberInSurah = ayahJson.optInt("numberInSurah", i + 1);
-                    ayah.text = ayahJson.optString("text", "").trim();
-                    payload.ayahs.add(ayah);
+                    // Update ayah text size.
+                    itemBinding.tvAyahText.setTextSize(currentFontSize);
+
+                } catch (Exception ignored) {
+                    // Ignore views that are not item_ayah layouts.
                 }
             }
-
-            return payload;
-        } catch (JSONException e) {
-            Log.e("SurahDetail", "Parse error", e);
-            return null;
         }
     }
 
+    // Meccan Or Medina
     private String toArabicRevelationType(String revelationType) {
         if ("Meccan".equalsIgnoreCase(revelationType)) {
             return getString(R.string.revelation_meccan_ar);
         }
+
         if ("Medinan".equalsIgnoreCase(revelationType)) {
             return getString(R.string.revelation_medinan_ar);
         }
+
         return getString(R.string.revelation_unknown_ar);
-    }
-
-    private String readStream(InputStream inputStream) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-        }
-        return builder.toString();
-    }
-
-    private static class AyahItem {
-        int numberInSurah;
-        String text;
-    }
-
-    private static class SurahPayload {
-        String name;
-        String revelationTypeArabic;
-        int numberOfAyahs;
-        List<AyahItem> ayahs;
-        String errorMessage;
     }
 }
