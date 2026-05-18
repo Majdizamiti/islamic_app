@@ -39,7 +39,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="المصحف الشريف"
+                        android:text="إحسان"
                         android:textColor="@color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
@@ -47,10 +47,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="السلام عليكم ورحمة الله"
+                        android:alpha="0.8"
+                        android:text="السّلام عليكم ورحمة اللّه وبركاته"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:alpha="0.8" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -136,12 +136,12 @@
                         android:progress="60"
                         android:progressTint="@color/dark_green" />
 
-                    <!-- Prayer Icons Bottom row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:weightSum="5">
+                        android:weightSum="5"
+                        android:layoutDirection="rtl">
 
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
                             <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/circle_backgroud_light" app:tint="@color/gold" />
@@ -212,9 +212,10 @@
                         android:alpha="0.2" />
 
                     <TextView
+                        android:id="@+id/tvRandomAyahText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾"
+                        android:text="..."
                         android:textColor="@color/dark_text"
                         android:textSize="26sp"
                         android:gravity="center"
@@ -222,10 +223,11 @@
                         android:textDirection="rtl" />
 
                     <TextView
+                        android:id="@+id/tvRandomAyahInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="سورة طه - آية 114"
+                        android:text="..."
                         android:textColor="@color/text_hint"
                         android:textSize="14sp" />
 

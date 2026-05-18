@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:fontFamily="serif"
-                    android:text="Join Us"
+                    android:text="إنشاء حساب"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -61,7 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Create your Islamic Companion account"
+                    android:text="تطبيق إحسان"
                     android:textColor="@color/gold_light"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -86,7 +86,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email Address"
+                    android:text="البريد الإلكتروني"
                     android:textColor="@color/dark_text"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -97,7 +97,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_background"
-                    android:hint="Enter your email"
+                    android:hint="foulen@gmail.com"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="16dp"
                     android:textColor="@color/dark_text"
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Password"
+                    android:text="كلمة السرّ"
                     android:textColor="@color/dark_text"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -118,7 +118,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_background"
-                    android:hint="Enter your password"
+                    android:hint="Password"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
                     android:textColor="@color/dark_text"
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Confirm Password"
+                    android:text="إعادة كتابة كلمة السرّ"
                     android:textColor="@color/dark_text"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -139,7 +139,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_background"
-                    android:hint="Confirm your password"
+                    android:hint="Password"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
                     android:textColor="@color/dark_text"
@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Select Role"
+                    android:text="إختار الدّور"
                     android:textColor="@color/dark_text"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -169,7 +169,7 @@
                     android:layout_height="55dp"
                     android:layout_marginTop="24dp"
                     android:backgroundTint="@color/dark_green"
-                    android:text="Sign Up"
+                    android:text="إنشاء حساب"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -199,14 +199,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already have an account? "
+                android:text="لديك حساب؟"
                 android:textColor="@color/dark_text" />
 
             <TextView
                 android:id="@+id/text_login_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="دخول"
                 android:textColor="@color/dark_green"
                 android:textStyle="bold" />
         </LinearLayout>
