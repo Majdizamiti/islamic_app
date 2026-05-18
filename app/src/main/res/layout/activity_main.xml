@@ -212,9 +212,10 @@
                         android:alpha="0.2" />
 
                     <TextView
+                        android:id="@+id/tvRandomAyahText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾"
+                        android:text="..."
                         android:textColor="@color/dark_text"
                         android:textSize="26sp"
                         android:gravity="center"
@@ -222,10 +223,11 @@
                         android:textDirection="rtl" />
 
                     <TextView
+                        android:id="@+id/tvRandomAyahInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="سورة طه - آية 114"
+                        android:text="..."
                         android:textColor="@color/text_hint"
                         android:textSize="14sp" />
 
