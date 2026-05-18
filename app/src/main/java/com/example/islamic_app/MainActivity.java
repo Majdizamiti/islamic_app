@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        checkUserRole();
         loadData();
 
         // Redirect to Quranpage
@@ -64,6 +65,45 @@ public class MainActivity extends AppCompatActivity {
         tvRandomAyahInfo = findViewById(R.id.tvRandomAyahInfo);
 
         loadRandomAyahForHome();
+        // FAB Click logic
+        binding.fabAdd.setOnClickListener(v -> {
+            if (binding.tvFabMessage.getVisibility() == View.VISIBLE) {
+                binding.tvFabMessage.setVisibility(View.GONE);
+            } else {
+                binding.tvFabMessage.setVisibility(View.VISIBLE);
+            }
+        });
+
+        // Navigate to TilawaActivity when clicking the message
+        binding.tvFabMessage.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TilawaActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void checkUserRole() {
+        if (mAuth.getCurrentUser() != null) {
+            String userId = mAuth.getCurrentUser().getUid();
+            mDatabase.child("users").child(userId).child("role")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String role = snapshot.getValue(String.class);
+                            if ("Creator".equalsIgnoreCase(role)) {
+                                binding.fabAdd.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.fabAdd.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            binding.fabAdd.setVisibility(View.GONE);
+                        }
+                    });
+        } else {
+            binding.fabAdd.setVisibility(View.GONE);
+        }
     }
 
     private void loadData() {

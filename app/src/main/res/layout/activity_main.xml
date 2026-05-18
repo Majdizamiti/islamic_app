@@ -596,14 +596,28 @@
     </ScrollView>
 
 
+    <TextView
+        android:id="@+id/tvFabMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fabAdd"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ayah_background_pattern"
+        android:padding="12dp"
+        android:text="إضافة محتوى جديد"
+        android:textColor="@color/dark_green"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:layout_marginEnd="411dp"
         android:src="@android:drawable/ic_input_add"
         android:visibility="gone"
         app:backgroundTint="@color/gold"

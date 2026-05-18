@@ -50,6 +50,9 @@
             android:name=".TasbihActivity"
             android:exported="false" />
         <activity
+            android:name=".TilawaActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
     </application>
