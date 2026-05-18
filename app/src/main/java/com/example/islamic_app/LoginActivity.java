@@ -71,17 +71,23 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+        progressBar.setVisibility(View.VISIBLE);
+        loginButton.setEnabled(false);
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
+                        loginButton.setEnabled(true);
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication Failed: ", Toast.LENGTH_SHORT).show();
+                            String errorMsg = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                            Toast.makeText(LoginActivity.this, "Authentication Failed: " + errorMsg, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
